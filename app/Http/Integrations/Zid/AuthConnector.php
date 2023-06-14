@@ -36,13 +36,14 @@ class AuthConnector extends Connector
      *
      * @return OAuthConfig
      */
-    protected function defaultConfig(): OAuthConfig
+    protected function defaultOauthConfig(): OAuthConfig
     {
         return OAuthConfig::make()
             ->setClientId(config('services.zid.client_id'))
             ->setClientSecret(config('services.zid.client_secret'))
             ->setRedirectUri(url()->route('zid.callback'))
             ->setTokenEndpoint('/oauth/token')
-            ->setAuthorizeEndpoint('/oauth/authorize');
+            ->setAuthorizeEndpoint('/oauth/authorize')
+            ;
     }
 }
