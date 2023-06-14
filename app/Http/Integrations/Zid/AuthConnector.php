@@ -57,7 +57,6 @@ class AuthConnector extends Connector
     {
         $responseData = $response->object();
 
-        dd($responseData);
         $accessToken = $responseData->authorization;
         $refreshToken = $responseData->refresh_token ?? $fallbackRefreshToken;
         $managerToken = $responseData->access_token;
