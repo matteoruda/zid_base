@@ -67,6 +67,6 @@ class AuthConnector extends Connector
 
     protected function createOAuthAuthenticator(string $accessToken, string $refreshToken, DateTimeImmutable $expiresAt, string $managerToken): OAuthAuthenticator
     {
-        return new ZidAccessTokenAuthenticator($accessToken, $refreshToken, $expiresAt);
+        return new ZidAccessTokenAuthenticator($accessToken, $refreshToken, $managerToken, $expiresAt);
     }
 }
