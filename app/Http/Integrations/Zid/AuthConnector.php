@@ -41,7 +41,7 @@ class AuthConnector extends Connector
         return OAuthConfig::make()
             ->setClientId(config('services.zid.client_id'))
             ->setClientSecret(config('services.zid.client_secret'))
-            ->setRedirectUri(url()->route('zid.callback'))
+            ->setRedirectUri(url()->route('callback'))
             ->setTokenEndpoint('/oauth/token')
             ->setAuthorizeEndpoint('/oauth/authorize')
             ;
