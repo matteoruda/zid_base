@@ -46,8 +46,9 @@ class ZidController extends Controller
         try {
             $authorization = $authConnector->getAccessToken($code, $state, $expectedState);
 
-            dd($authorization);
             $client = new Client();
+            var_dump($authorization->accessToken);
+            var_dump($authorization->managerToken);
             $profile_response = $client->get('https://api.zid.sa/v1/managers/account/profile',[
                 'headers' => [
                     'Authorization' => 'Bearer ' . $authorization->accessToken,
