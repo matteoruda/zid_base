@@ -56,7 +56,7 @@ class ZidController extends Controller
                     'X-Manager-Token' => $authorization->accessToken,
                 ],
             ]);
-            dd($profile_response->getBody());
+            dd($profile_response->getBody()->getContents());
             $profileRequest = new GetProfileRequest();
             $response = $apiConnector->send($profileRequest);
             dd($response);
