@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Integrations\Zid\ApiConnector;
 use App\Http\Integrations\Zid\AuthConnector;
 use App\Http\Integrations\Zid\Requests\GetProfileRequest;
 use Illuminate\Http\RedirectResponse;
@@ -37,16 +38,17 @@ class ZidController extends Controller
 
         $expectedState = Session::pull('zidAuthState');
 
-        $connector = new AuthConnector;
+        $authConnector = new AuthConnector;
 
         try {
-            $authorization = $connector->getAccessToken($code, $state, $expectedState);
+            $authorization = $authConnector->getAccessToken($code, $state, $expectedState);
+            $apiConnector = ApiConnector::make()->authenticate($authorization);
 
-            $connector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
-            $connector->headers()->add('X-Manager-Token', $authorization->managerToken);
+//            $connector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
+//            $apiConnector->headers()->add('X-Manager-Token', $authorization->managerToken);
 
             $profileRequest = new GetProfileRequest();
-            $response = $connector->send($profileRequest);
+            $response = $apiConnector->send($profileRequest);
             dd($response->json());
         } catch (\Exception $e) {
             dd($e->getMessage());

@@ -17,6 +17,7 @@ class AuthConnector extends Connector
     use AcceptsJson;
     use AuthorizationCodeGrant;
 
+
     /**
      * The Base URL of the API
      *
@@ -24,8 +25,9 @@ class AuthConnector extends Connector
      */
     public function resolveBaseUrl(): string
     {
-        return 'https://api.zid.sa/v1';
+        return 'https://oauth.zid.sa/';
     }
+
 
     /**
      * Default headers for every request
@@ -48,8 +50,8 @@ class AuthConnector extends Connector
             ->setClientId(config('services.zid.client_id'))
             ->setClientSecret(config('services.zid.client_secret'))
             ->setRedirectUri(url()->route('callback'))
-            ->setTokenEndpoint('https://oauth.zid.sa/oauth/token')
-            ->setAuthorizeEndpoint('https://oauth.zid.sa/oauth/authorize')
+            ->setTokenEndpoint('oauth/token')
+            ->setAuthorizeEndpoint('oauth/authorize')
             ;
     }
 
