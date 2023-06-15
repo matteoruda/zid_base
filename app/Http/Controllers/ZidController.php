@@ -44,10 +44,9 @@ class ZidController extends Controller
 
             $connector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
             $connector->headers()->add('X-Manager-Token', $authorization->managerToken);
-            var_dump($authorization);
 
             $profileRequest = new GetProfileRequest();
-            var_dump($connector->headers());
+            dd($connector->headers());
             $response = $connector->send($profileRequest);
             dd($response->json());
         } catch (\Exception $e) {
