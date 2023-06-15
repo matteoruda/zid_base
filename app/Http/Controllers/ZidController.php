@@ -49,17 +49,10 @@ class ZidController extends Controller
             $apiConnector->headers()->add('Authorization', 'Bearer ' . $authorization->managerToken);
             $apiConnector->headers()->add('X-Manager-Token', $authorization->accessToken);
 
-            $client = new Client();
-            $profile_response = $client->get('https://api.zid.sa/v1/managers/account/profile',[
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $authorization->managerToken,
-                    'X-Manager-Token' => $authorization->accessToken,
-                ],
-            ]);
-            dd($profile_response);
+
             $profileRequest = new GetProfileRequest();
             $response = $apiConnector->send($profileRequest);
-            dd($response);
+            dd($response->json());
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
