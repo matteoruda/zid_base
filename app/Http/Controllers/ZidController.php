@@ -14,7 +14,6 @@ use Saloon\Exceptions\OAuthConfigValidationException;
 use Saloon\Exceptions\PendingRequestException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Spatie\FlareClient\Api;
 
 
 class ZidController extends Controller
@@ -46,14 +45,21 @@ class ZidController extends Controller
 
         try {
             $authorization = $authConnector->getAccessToken($code, $state, $expectedState);
-            $apiConnector = ApiConnector::make()->authenticate($authorization);
-            $apiConnector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
-            $apiConnector->headers()->add('X-Manager-Token', $authorization->managerToken);
+            $apiConnector = new ApiConnector();
+            $apiConnector->headers()->add('Authorization', 'Bearer ' . $authorization->managerToken);
+            $apiConnector->headers()->add('X-Manager-Token', $authorization->accessToken);
 
-
+            $client = new Client();
+            $profile_response = $client->get('https://api.zid.sa/v1/managers/account/profile',[
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $authorization->managerToken,
+                    'X-Manager-Token' => $authorization->accessToken,
+                ],
+            ]);
+            dd($profile_response->getBody());
             $profileRequest = new GetProfileRequest();
             $response = $apiConnector->send($profileRequest);
-            dd($response->json());
+            dd($response);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
