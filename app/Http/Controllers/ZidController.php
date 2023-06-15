@@ -12,6 +12,9 @@ use Saloon\Exceptions\InvalidResponseClassException;
 use Saloon\Exceptions\InvalidStateException;
 use Saloon\Exceptions\OAuthConfigValidationException;
 use Saloon\Exceptions\PendingRequestException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 
 class ZidController extends Controller
 {
@@ -46,8 +49,16 @@ class ZidController extends Controller
             $apiConnector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
             $apiConnector->headers()->add('X-Manager-Token', $authorization->managerToken);
 
+            $client = new Client();
+            $profile_response = $client->get('https://api.zid.sa/v1/managers/account/profile',[
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $authorization->accessToken,
+                    'X-Manager-Token' => $authorization->managerToken,
+                ],
+            ]);
+            dd($profile_response);
             $profileRequest = new GetProfileRequest();
-            $response = $apiConnector->send($profileRequest)->getRequest();
+            $response = $apiConnector->send($profileRequest);
             dd($response);
         } catch (\Exception $e) {
             dd($e->getMessage());
