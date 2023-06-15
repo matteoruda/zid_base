@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Integrations\Zid\AuthConnector;
+use App\Http\Integrations\Zid\Requests\GetProfileRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -28,13 +29,7 @@ class ZidController extends Controller
         return redirect()->to($authorizationUrl);
     }
 
-    /**
-     * @throws InvalidResponseClassException
-     * @throws OAuthConfigValidationException
-     * @throws \ReflectionException
-     * @throws InvalidStateException
-     * @throws PendingRequestException
-     */
+
     public function handleCallback(Request $request)
     {
         $code = $request->input('code');
@@ -44,9 +39,19 @@ class ZidController extends Controller
 
         $connector = new AuthConnector;
 
-        $authorization = $connector->getAccessToken($code, $state, $expectedState);
+        try {
+            $authorization = $connector->getAccessToken($code, $state, $expectedState);
 
-        dd($authorization);
+            $connector->headers()->add('Bearer', $authorization->accessToken);
+            $connector->headers()->add('X-Manager-Token', $authorization->managerToken);
+
+            $profileRequest = new GetProfileRequest();
+            $response = $connector->send($profileRequest);
+            dd($response->json());
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
 
         return redirect()->route('home');
     }

@@ -24,7 +24,7 @@ class AuthConnector extends Connector
      */
     public function resolveBaseUrl(): string
     {
-        return 'https://oauth.zid.sa';
+        return 'https://api.zid.sa/v1';
     }
 
     /**
@@ -48,8 +48,8 @@ class AuthConnector extends Connector
             ->setClientId(config('services.zid.client_id'))
             ->setClientSecret(config('services.zid.client_secret'))
             ->setRedirectUri(url()->route('callback'))
-            ->setTokenEndpoint('/oauth/token')
-            ->setAuthorizeEndpoint('/oauth/authorize')
+            ->setTokenEndpoint('https://oauth.zid.sa/oauth/token')
+            ->setAuthorizeEndpoint('https://oauth.zid.sa/oauth/authorize')
             ;
     }
 

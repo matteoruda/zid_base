@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('zid_user_id')->nullable();
+            $table->string('zid_store_id')->nullable();
+            $table->text('zid_auth')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
