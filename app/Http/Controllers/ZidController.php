@@ -43,9 +43,8 @@ class ZidController extends Controller
         try {
             $authorization = $authConnector->getAccessToken($code, $state, $expectedState);
             $apiConnector = ApiConnector::make()->authenticate($authorization);
-            dd($apiConnector->headers()->all());
-//            $connector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
-//            $apiConnector->headers()->add('X-Manager-Token', $authorization->managerToken);
+            $apiConnector->headers()->add('Authorization', 'Bearer ' . $authorization->accessToken);
+            $apiConnector->headers()->add('X-Manager-Token', $authorization->managerToken);
 
             $profileRequest = new GetProfileRequest();
             $response = $apiConnector->send($profileRequest);
